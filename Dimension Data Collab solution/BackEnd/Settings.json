@@ -1,0 +1,6 @@
+{
+  "DataBaseSettings": {
+    "DataBaseName": "MainData",
+    "CollectionName": "Test"
+  }
+}

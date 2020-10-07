@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using BackEnd.TestFolder;
+using BackEnd.DataAccess;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dimension_Data_Collab.Controllers
 {
@@ -21,22 +22,22 @@ namespace Dimension_Data_Collab.Controllers
             return View();
         }
 
-        public ActionResult ViewDataTest()
+        public async Task<ActionResult> ViewDataTestAsync()
         {
-            var x = Helper.GetData<BackEnd.Models.DataItem>();
+            var db = new DataAccessClass<BackEnd.Models.DataItem>("Test");
+            var x = await db.GetAllRecords(1,15);
             return View(x);
         }
 
-        // GET: TestController/Details/5
-        public ActionResult Details(int id)
+        [Authorize]
+        public ActionResult AuthTest()
         {
             return View();
         }
 
-        // GET: TestController/Create
-        public ActionResult Create()
+        public ActionResult Auth()
         {
-            return View();
+            return RedirectToAction("Index");
         }
 
         // POST: TestController/Create

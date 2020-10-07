@@ -24,6 +24,10 @@ namespace Dimension_Data_Collab
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddAuthentication("CookieAuth").AddCookie("CookieAuth",config => {
+                config.Cookie.Name = "CookieAuth";
+                config.LoginPath = "/test/Auth";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +48,10 @@ namespace Dimension_Data_Collab
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {
