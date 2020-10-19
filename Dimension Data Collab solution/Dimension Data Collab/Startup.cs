@@ -26,6 +26,8 @@ namespace Dimension_Data_Collab
             services.AddAuthentication("CookieAuth").AddCookie("CookieAuth", config =>
             {
                 config.Cookie.Name = "CookieAuth";
+                config.ExpireTimeSpan = new System.TimeSpan(1, 0, 0);
+                config.SlidingExpiration = true;
                 config.LoginPath = "/Login";
                 config.AccessDeniedPath = "/AccessDenied";
             });

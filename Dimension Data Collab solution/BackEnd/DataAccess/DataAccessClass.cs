@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.DataAccess
 {
-    public abstract class  DataAccessClass<T>
+    internal class  DataAccessClass<T>
     {
 
         public IMongoCollection<T> collection { get; private set; }
@@ -52,6 +52,11 @@ namespace BackEnd.DataAccess
         {
             var filter = Builders<T>.Filter.Eq("_id", _id);
             collection.DeleteOne(filter);
+        }
+
+        public async Task<long> GetCount()
+        {
+            return await collection.CountDocumentsAsync(new BsonDocument());
         }
     }
 }

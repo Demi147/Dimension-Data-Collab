@@ -27,10 +27,17 @@ namespace BackEnd.BussinessLogic
         {
             var DA = new DataItemAccess(SettingsHolder.CollectionName, SettingsHolder.DataBaseName);
             var items = await DA.GetAllRecords((page > 0 ? page : 1), SettingsHolder.PageSize);
+            
             return items;
         }
         //u
 
         //d
+
+        public async static Task<long> GetCount()
+        {
+            var DA = new DataItemAccess(SettingsHolder.CollectionName, SettingsHolder.DataBaseName);
+            return await DA.GetCount();
+        }
     }
 }

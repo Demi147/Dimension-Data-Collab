@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BackEnd.DataAccess
 {
-    public class DataItemAccess : DataAccessClass<DataItem>
+    internal class DataItemAccess : DataAccessClass<DataItem>
     {
         public DataItemAccess(string table, string database) : base(table, database)
         {

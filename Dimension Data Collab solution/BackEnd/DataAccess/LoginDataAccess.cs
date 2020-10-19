@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.DataAccess
 {
-    public class LoginDataAccess : DataAccessClass<PersonModel>
+    internal class LoginDataAccess : DataAccessClass<PersonModel>
     {
         public LoginDataAccess(string table, string database) : base(table, database)
         {

@@ -6,6 +6,8 @@
 
 <h1>Index</h1>
 
+@Context.User.IsInRole("user")
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -31,29 +33,76 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmployeeNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Age)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Department)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.JobRole)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.JobLevel)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { id = item._id.ToString() }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Age)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobRole)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobLevel)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { id = item._id.ToString() }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@{
+    <!--pagination-->
+    var pages = (int)ViewData["pages"];
+    var currentPage = (int)ViewData["page"];
+
+    <div>
+        <ul class="pagination">
+            @if (currentPage > 1)
+            {
+                <li class="page-item"><a class="page-link" href="@(currentPage-1) ">&laquo;</a></li>
+                <li class="page-item"><a class="page-link" href="1">1</a></li>
+            }
+
+            <!--To left-->
+            @for (int i = currentPage - 4, k = 1; i < currentPage; i++, k++)
+            {
+                if (i > 0)
+                {
+                    <li class="page-item"><a class="page-link" href="@i">@i</a></li>
+                }
+
+            }
+
+            <li class="btn page-item page-link disabled">@currentPage</li>
+
+            <!--To right-->
+            @for (int i = currentPage + 1, k = 1; i < currentPage + 4; i++, k++)
+            {
+                if (i <= pages)
+                {
+                    <li class="page-item"><a class="page-link" href="@i">@i</a></li>
+                }
+            }
+
+            @if (currentPage < pages)
+            {
+                <li class="page-item"><a class="page-link" href="@pages">@pages</a></li>
+                <li class="page-item"><a class="page-link" href="@(currentPage+1)">&raquo;</a></li>
+            }
+
+        </ul>
+
+    </div>
+
+}

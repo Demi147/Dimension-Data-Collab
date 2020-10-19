@@ -37,16 +37,15 @@ namespace Dimension_Data_Collab.Controllers
         //    var data = await db.GetAllRecords(1, 15);
         //    return View(data);
         //}
-        [Route("data")]
-        [Route("data/list")]
         [Route("data/index")]
         [Route("data/index/{page}")]
-        [Route("data/{page}")]
         public async Task<IActionResult> Index(int page)
         {
-            //var db = new DataAccessClass<BackEnd.Models.DataItem>("Test");
-            //var data = await db.GetAllRecords((id > 0 ? id : 1), 15);
             var items = await DataLogic.GetItems(page);
+            var pages = await DataLogic.GetCount();
+            var pageSize = 15;
+            ViewData["pages"] = (int)(pages / pageSize);
+            ViewData["page"] = (page > 0 ? page : 1);
             return View(items);
         }
 
