@@ -5,20 +5,20 @@ using System.Threading.Tasks;
 
 namespace BackEnd.DataAccess
 {
-    public class  DataAccessClass<T>
+    public abstract class  DataAccessClass<T>
     {
 
         public IMongoCollection<T> collection { get; private set; }
 
-        public DataAccessClass(string table)
+        public DataAccessClass(string table,string database)
         {
             var client = new MongoClient(SettingsHolder.ConnectionString);
-            var db = client.GetDatabase(SettingsHolder.DataBaseName);
+            var db = client.GetDatabase(database);
             var col = db.GetCollection<T>(table);
             collection = col;
         }
 
-        public async Task<List<T>> GetAllRecords(int page,int pageSize)//NOTE: start counting at 1
+        public virtual async Task<List<T>> GetAllRecords(int page,int pageSize)//NOTE: start counting at 1
         {
             return await collection.Find(new BsonDocument()).Skip((page-1) * pageSize).Limit(pageSize).ToListAsync();
         }

@@ -6,9 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BackEnd.DataAccess;
 using MongoDB.Bson;
+using Microsoft.AspNetCore.Authorization;
+using BackEnd.Models;
+using BackEnd.BussinessLogic;
 
 namespace Dimension_Data_Collab.Controllers
 {
+    [Authorize(Roles ="user")]
     public class DataController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -36,23 +40,25 @@ namespace Dimension_Data_Collab.Controllers
         [Route("data")]
         [Route("data/list")]
         [Route("data/index")]
-        [Route("data/index/{id}")]
-        [Route("data/{id}")]
-        public async Task<IActionResult> Index(int id)
+        [Route("data/index/{page}")]
+        [Route("data/{page}")]
+        public async Task<IActionResult> Index(int page)
         {
-            var db = new DataAccessClass<BackEnd.Models.DataItem>("Test");
-            var data = await db.GetAllRecords((id > 0 ? id : 1), 15);
-            return View(data);
+            //var db = new DataAccessClass<BackEnd.Models.DataItem>("Test");
+            //var data = await db.GetAllRecords((id > 0 ? id : 1), 15);
+            var items = await DataLogic.GetItems(page);
+            return View(items);
         }
 
         [Route("data/details/{id}")]
+        [Authorize(Roles ="manager")]
         public async Task<IActionResult> Details(string id)
         {
 
-            new ObjectId();
-            var db = new DataAccessClass<BackEnd.Models.DataItem>("Test");
-            var data = await db.GetRecordById(new ObjectId(id));
-            return View(data);
+            //new ObjectId();
+            //var db = new DataAccessClass<BackEnd.Models.DataItem>("Test");
+            //var data = await db.GetRecordById(new ObjectId(id));
+            return View();
         }
     }
 }

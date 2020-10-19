@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Dimension_Data_Collab.Controllers
 {
+    [Authorize(Roles ="user")]
     public class TestController : Controller
     {
         // GET: TestController
@@ -17,16 +18,22 @@ namespace Dimension_Data_Collab.Controllers
             return View();
         }
 
+        [Authorize(Roles ="admin")]
         public ActionResult Test()
+        {
+            return View();
+        }
+        [Authorize(Roles = "manager")]
+        public ActionResult ManagerTest()
         {
             return View();
         }
 
         public async Task<ActionResult> ViewDataTestAsync()
         {
-            var db = new DataAccessClass<BackEnd.Models.DataItem>("Test");
-            var x = await db.GetAllRecords(1,15);
-            return View(x);
+            //var db = new DataAccessClass<BackEnd.Models.DataItem>("Test");
+            //var x = await db.GetAllRecords(1,15);
+            return View();
         }
 
         [Authorize]

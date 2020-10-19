@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+using BackEnd.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Dimension_Data_Collab
 {
@@ -23,11 +23,14 @@ namespace Dimension_Data_Collab
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            services.AddAuthentication("CookieAuth").AddCookie("CookieAuth",config => {
+            services.AddAuthentication("CookieAuth").AddCookie("CookieAuth", config =>
+            {
                 config.Cookie.Name = "CookieAuth";
-                config.LoginPath = "/test/Auth";
+                config.LoginPath = "/Login";
+                config.AccessDeniedPath = "/AccessDenied";
             });
+
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +46,7 @@ namespace Dimension_Data_Collab
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
