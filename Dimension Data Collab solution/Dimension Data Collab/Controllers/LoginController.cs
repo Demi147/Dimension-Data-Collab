@@ -54,6 +54,7 @@ namespace Dimension_Data_Collab.Controllers
         }
 
         [HttpPost]
+        [Route("Register")]
         public IActionResult Register(PersonModel model)
         {
             if (ModelState.IsValid)

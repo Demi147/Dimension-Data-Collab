@@ -31,8 +31,18 @@ namespace BackEnd.BussinessLogic
             return items;
         }
         //u
+        public static void UpdateItem(DataItem _item)
+        {
+            var DA = new DataItemAccess(SettingsHolder.CollectionName, SettingsHolder.DataBaseName);
+            DA.UpsertRecord(_item._id,_item);
+        }
 
         //d
+        public static void DeleteItemById(ObjectId _id)
+        {
+            var DA = new DataItemAccess(SettingsHolder.CollectionName, SettingsHolder.DataBaseName);
+            DA.DeleteRecord(_id);
+        }
 
         public async static Task<long> GetCount()
         {

@@ -43,6 +43,13 @@ namespace BackEnd.DataAccess
             collection.InsertOne(record);
         }
 
+        //public void UpdateRecord(ObjectId _id, T record)
+        //{
+        //    var filter = Builders<T>.Filter.Eq("_id", _id);
+        //    var update = Builders<BsonDocument>.Update.
+        //    collection.UpdateOne(filter,record);
+        //}
+
         public void UpsertRecord (ObjectId _id,T record)
         {
             collection.ReplaceOne(new BsonDocument("_id",_id), record,new ReplaceOptions {IsUpsert = true });

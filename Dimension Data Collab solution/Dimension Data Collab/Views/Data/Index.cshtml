@@ -52,9 +52,19 @@
                     @Html.DisplayFor(modelItem => item.JobLevel)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { id = item._id.ToString() }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @if (Context.User.IsInRole("manager"))
+                    {
+                        @Html.ActionLink("Details", "Details", new { id = item._id.ToString() })
+                    }
+                    @if (Context.User.IsInRole("admin"))
+                    {
+                        @Html.ActionLink("Details", "Details", new { id = item._id.ToString() })
+                        @: | 
+                        @Html.ActionLink("Edit", "Update", new { id = item._id.ToString() })
+                        @: | 
+                        @Html.ActionLink("Delete", "Delete", new { id = item._id.ToString() })
+                    }
+
                 </td>
             </tr>
         }

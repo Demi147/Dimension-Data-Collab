@@ -12,7 +12,7 @@ using BackEnd.BussinessLogic;
 
 namespace Dimension_Data_Collab.Controllers
 {
-    [Authorize(Roles ="user")]
+    [Authorize]
     public class DataController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -38,6 +38,7 @@ namespace Dimension_Data_Collab.Controllers
         //    return View(data);
         //}
         [Route("data/index")]
+        [Route("data/{page}")]
         [Route("data/index/{page}")]
         public async Task<IActionResult> Index(int page)
         {
@@ -50,13 +51,51 @@ namespace Dimension_Data_Collab.Controllers
         }
 
         [Route("data/details/{id}")]
-        [Authorize(Roles ="manager")]
         public async Task<IActionResult> Details(string id)
         {
+            var data = await DataLogic.GetItemById(new ObjectId(id));
+            return View(data);
+        }
 
-            //new ObjectId();
-            //var db = new DataAccessClass<BackEnd.Models.DataItem>("Test");
-            //var data = await db.GetRecordById(new ObjectId(id));
+        [Route("data/Delete/{id}")]
+        [Authorize(Roles = "manager,admin")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var data = await DataLogic.GetItemById(new ObjectId(id));
+            return View(data);
+        }
+
+        [Route("data/Delete/{id}")]
+        [HttpPost]
+        public IActionResult DeletePost(string id)
+        {
+            if (ModelState.IsValid)
+            {
+                DataLogic.DeleteItemById(new ObjectId(id));
+                return RedirectToAction("index");
+            }
+            ViewData["error"] = "Invalid model";
+            return View();
+        }
+
+        [Route("data/Update/{id}")]
+        [Authorize(Roles = "manager,admin")]
+        public async Task<IActionResult> Update(string id)
+        {
+            var data = await DataLogic.GetItemById(new ObjectId(id));
+            return View(data);
+        }
+
+        [Route("data/Update/{id}")]
+        [HttpPost]
+        public IActionResult Update(DataItem model)
+        {
+            if (ModelState.IsValid)
+            {
+                DataLogic.UpdateItem(model);
+                return RedirectToAction("index");
+            }
+            ViewData["error"] = "Invalid model";
             return View();
         }
     }
