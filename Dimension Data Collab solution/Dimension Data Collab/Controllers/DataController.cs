@@ -15,10 +15,13 @@ namespace Dimension_Data_Collab.Controllers
     [Authorize]
     public class DataController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        public DataController(ILogger<HomeController> logger)
+        private readonly ILogger<HomeController> logger;
+        private readonly DataLogic dataLogic;
+
+        public DataController(ILogger<HomeController> _logger, DataLogic _dataLogic)
         {
-            _logger = logger;
+            logger = _logger;
+            dataLogic = _dataLogic;
         }
 
         /*Actions to take:
@@ -42,18 +45,18 @@ namespace Dimension_Data_Collab.Controllers
         [Route("data/index/{page}")]
         public async Task<IActionResult> Index(int page)
         {
-            var items = await DataLogic.GetItems(page);
-            var pages = await DataLogic.GetCount();
-            var pageSize = 15;
-            ViewData["pages"] = (int)(pages / pageSize);
-            ViewData["page"] = (page > 0 ? page : 1);
+            int pageTemp = (page > 0 ? page : 1);
+            var items = await dataLogic.GetAllRecords(pageTemp,15);
+            var pages = await dataLogic.GetCount();
+            ViewData["pages"] = (int)(pages / 15);
+            ViewData["page"] = pageTemp;
             return View(items);
         }
 
         [Route("data/details/{id}")]
         public async Task<IActionResult> Details(string id)
         {
-            var data = await DataLogic.GetItemById(new ObjectId(id));
+            var data = await dataLogic.GetRecordById(new ObjectId(id));
             return View(data);
         }
 
@@ -61,7 +64,7 @@ namespace Dimension_Data_Collab.Controllers
         [Authorize(Roles = "manager,admin")]
         public async Task<IActionResult> Delete(string id)
         {
-            var data = await DataLogic.GetItemById(new ObjectId(id));
+            var data = await dataLogic.GetRecordById(new ObjectId(id));
             return View(data);
         }
 
@@ -71,7 +74,7 @@ namespace Dimension_Data_Collab.Controllers
         {
             if (ModelState.IsValid)
             {
-                DataLogic.DeleteItemById(new ObjectId(id));
+                dataLogic.DeleteRecord(new ObjectId(id));
                 return RedirectToAction("index");
             }
             ViewData["error"] = "Invalid model";
@@ -82,7 +85,7 @@ namespace Dimension_Data_Collab.Controllers
         [Authorize(Roles = "manager,admin")]
         public async Task<IActionResult> Update(string id)
         {
-            var data = await DataLogic.GetItemById(new ObjectId(id));
+            var data = await dataLogic.GetRecordById(new ObjectId(id));
             return View(data);
         }
 
@@ -92,7 +95,7 @@ namespace Dimension_Data_Collab.Controllers
         {
             if (ModelState.IsValid)
             {
-                DataLogic.UpdateItem(model);
+                dataLogic.UpsertRecord(model._id,model);
                 return RedirectToAction("index");
             }
             ViewData["error"] = "Invalid model";

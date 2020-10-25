@@ -1,59 +1,64 @@
-﻿using System;
+﻿using BackEnd.DataAccess;
+using BackEnd.Models;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using BackEnd.DataAccess;
-using BackEnd.Models;
-using MongoDB.Bson;
 
 namespace BackEnd.BussinessLogic
 {
-    public static class LoginLogic
+    public class LoginLogic : DataAccessClass<PersonModel>
     {
-        public static void RegisterUser(string name, string email, string password)
+        public LoginLogic() : base(SettingsHolder.LoginCollectionName, SettingsHolder.LoginDataBaseName)
         {
-            DataAccessClass<PersonModel> dataAccess = new LoginDataAccess(SettingsHolder.LoginCollectionName,SettingsHolder.LoginDataBaseName);
 
-            //create new user
-            var user = new PersonModel
+        }
+
+        //login sucsesfull, the login principal , error message
+        public async Task<(bool, ClaimsPrincipal, string)> TryLogin(string email, string pass)
+        {
+            (bool, ClaimsPrincipal, string) temp = (false, null, "none");
+
+            //TODO: ENCRYPT PASSWORD HERE
+            var data = await collection.FindAsync(new BsonDocument(new List<BsonElement>()
             {
-                Name = name,
-                Email = email,
-                PasswordHash = password,
-                Role = "user"
-            };
-            //set role to user
-            //ask data access to add the user to data base
+                new BsonElement("Email",email),
+                new BsonElement("PasswordHash",pass),
+            }
+            ));
+            var result = data.First();
 
-            dataAccess.InsertRecord(user);
+
+            try
+            {
+                if (result != null)
+                {
+                    //generate principal here?
+                    var princ = GetPrinciple(result);
+                    temp.Item1 = true;
+                    temp.Item2 = princ;
+                }
+            }
+            catch
+            {
+                temp.Item3 = "Fatal error logging in. Please provide valid details";
+            }
+
+
+            return temp;
         }
 
-        public static async Task<List<PersonModel>> GetAllUsers()
+        private ClaimsPrincipal GetPrinciple(PersonModel _model)
         {
-            DataAccessClass<PersonModel> dataAccess = new LoginDataAccess(SettingsHolder.LoginCollectionName, SettingsHolder.LoginDataBaseName);
-
-            return await dataAccess.GetAllRecords(1, 10);
-        }
-
-        public static async Task<(bool,ObjectId)> TryLogin(string email, string PasswordHash)
-        {
-            var dataAccess = new LoginDataAccess(SettingsHolder.LoginCollectionName, SettingsHolder.LoginDataBaseName);
-            var userExists = await dataAccess.CheckUserExists(email,PasswordHash);
-            return userExists;
-        }
-
-        public static async Task<ClaimsPrincipal> GetPrinciple(ObjectId _id)
-        {
-            var dataAccess = new LoginDataAccess(SettingsHolder.LoginCollectionName, SettingsHolder.LoginDataBaseName);
-            //get the full user object
-            var user = await dataAccess.GetRecordById(_id);
-
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name,user.Name),
-                new Claim(ClaimTypes.Role,user.Role),
-                new Claim(ClaimTypes.Email,user.Email)
+                new Claim(ClaimTypes.Name, _model.Name),
+                new Claim(ClaimTypes.Role, _model.Role),
+                new Claim(ClaimTypes.Email, _model.Email)
             };
 
             var identity = new ClaimsIdentity(claims, "Claim");

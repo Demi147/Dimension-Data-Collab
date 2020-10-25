@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.DataAccess
 {
-    internal class  DataAccessClass<T>
+    public class  DataAccessClass<T>
     {
 
         public IMongoCollection<T> collection { get; private set; }

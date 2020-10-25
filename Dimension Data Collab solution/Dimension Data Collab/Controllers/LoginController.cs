@@ -13,38 +13,35 @@ namespace Dimension_Data_Collab.Controllers
 {
     public class LoginController : Controller
     {
-
-        public IActionResult Index()
+        private readonly LoginLogic loginLogic;
+        public LoginController(LoginLogic _loginLogic)
         {
-            return View();
+            loginLogic = _loginLogic;
         }
 
         [Route("Login")]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl)
         {
             return View();
         }
-
+         
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> Login(string email,string PasswordHash)
+        public async Task<IActionResult> Login(string returnUrl,string email,string PasswordHash )
         {
-            //check if user exists and entered the right stuff
-            var exist = await LoginLogic.TryLogin(email, PasswordHash);
-            //then call the losgin function...
-            if (exist.Item1)//user exists
+            var result = await loginLogic.TryLogin(email,PasswordHash);
+
+            if (result.Item1)
             {
-                //login user here
-                var prin = await LoginLogic.GetPrinciple(exist.Item2);
-                await HttpContext.SignInAsync(prin);
-                return Redirect("home/index");
+                await HttpContext.SignInAsync(result.Item2);
+                return Redirect(returnUrl);
+                //return to return url or view;
             }
             else
             {
-                ViewData["Error"] = "User does not exist or incorrect information was given.";
+                ViewData["error"] = result.Item3;
                 return View();
             }
-            
         }
 
         [Route("Register")]
@@ -59,7 +56,8 @@ namespace Dimension_Data_Collab.Controllers
         {
             if (ModelState.IsValid)
             {
-                LoginLogic.RegisterUser(model.Name,model.Email,model.PasswordHash);
+                //TODO: Encrypt password here
+                loginLogic.InsertRecord(model);
                 return RedirectToAction("Login");
             }
             else
@@ -69,12 +67,6 @@ namespace Dimension_Data_Collab.Controllers
             }
             //give the data to the register user backend
             
-        }
-
-        public async Task<IActionResult> ListAllUsers()
-        {
-            var data = await LoginLogic.GetAllUsers();
-            return View(data);
         }
     }
 }

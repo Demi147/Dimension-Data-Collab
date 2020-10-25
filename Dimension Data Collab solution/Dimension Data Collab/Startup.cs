@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 
 using BackEnd.Models;
 using Microsoft.AspNetCore.Identity;
+using BackEnd.BussinessLogic;
 
 namespace Dimension_Data_Collab
 {
@@ -32,6 +33,9 @@ namespace Dimension_Data_Collab
                 config.AccessDeniedPath = "/AccessDenied";
             });
 
+            //my services
+            services.AddSingleton<DataLogic>();
+            services.AddSingleton<LoginLogic>();
             services.AddControllersWithViews();
         }
 
