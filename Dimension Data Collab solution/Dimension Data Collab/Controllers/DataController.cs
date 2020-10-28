@@ -91,11 +91,11 @@ namespace Dimension_Data_Collab.Controllers
 
         [Route("data/Update/{id}")]
         [HttpPost]
-        public IActionResult Update(DataItem model)
+        public IActionResult Update(string id,DataItem model)
         {
             if (ModelState.IsValid)
             {
-                dataLogic.UpsertRecord(model._id,model);
+                dataLogic.UpsertRecord(new ObjectId(id),model);
                 return RedirectToAction("index");
             }
             ViewData["error"] = "Invalid model";

@@ -34,8 +34,9 @@ namespace Dimension_Data_Collab
             });
 
             //my services
-            services.AddSingleton<DataLogic>();
-            services.AddSingleton<LoginLogic>();
+            string temp = Configuration["ConnectionString"];
+            services.AddSingleton<DataLogic>(new DataLogic(temp, Configuration["DataBase:DataDBCollection"], Configuration["DataBase:DataDBName"]));
+            services.AddSingleton<LoginLogic>(new LoginLogic(temp, Configuration["DataBase:LoginDBCollection"], Configuration["DataBase:LoginDBName"]));
             services.AddControllersWithViews();
         }
 

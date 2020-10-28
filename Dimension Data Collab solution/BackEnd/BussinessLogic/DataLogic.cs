@@ -10,7 +10,7 @@ namespace BackEnd.BussinessLogic
 {
     public class DataLogic : DataAccessClass<DataItem>
     {
-        public DataLogic():base(SettingsHolder.CollectionName,SettingsHolder.DataBaseName)
+        public DataLogic(string conString, string table, string database) :base(conString, table, database)
         {
 
         }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BackEnd.BussinessLogic;
 using BackEnd.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,7 @@ namespace Dimension_Data_Collab.Controllers
         }
 
         [Route("Login")]
-        public IActionResult Login(string returnUrl)
+        public IActionResult Login()
         {
             return View();
         }
@@ -34,7 +35,14 @@ namespace Dimension_Data_Collab.Controllers
             if (result.Item1)
             {
                 await HttpContext.SignInAsync(result.Item2);
-                return Redirect(returnUrl);
+                if (returnUrl!=null)
+                {
+                    return Redirect(returnUrl);
+                }
+                else
+                {
+                    return Redirect("home/index");
+                }
                 //return to return url or view;
             }
             else
@@ -67,6 +75,23 @@ namespace Dimension_Data_Collab.Controllers
             }
             //give the data to the register user backend
             
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync();
+            return RedirectToAction("Index","Home");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> ViewAccount()
+        {
+            var email = HttpContext.User.Identities.ToList()[0].Claims.ToList()[2].Value;
+            //get account by email
+            var person = await loginLogic.GetUserByEmail(email);
+            //push account into view
+
+            return View(person);
         }
     }
 }

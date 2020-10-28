@@ -13,7 +13,7 @@ namespace BackEnd.BussinessLogic
 {
     public class LoginLogic : DataAccessClass<PersonModel>
     {
-        public LoginLogic() : base(SettingsHolder.LoginCollectionName, SettingsHolder.LoginDataBaseName)
+        public LoginLogic(string conString, string table, string database) : base(conString,table,database)
         {
 
         }
@@ -66,6 +66,18 @@ namespace BackEnd.BussinessLogic
             var principal = new ClaimsPrincipal(identity);
 
             return principal;
+        }
+
+        public async Task<PersonModel> GetUserByEmail(string email)
+        {
+            var data = await collection.FindAsync(new BsonDocument(new List<BsonElement>()
+            {
+                new BsonElement("Email",email),
+            }
+            ));
+            var result = data.First();
+
+            return result;
         }
     }
 }

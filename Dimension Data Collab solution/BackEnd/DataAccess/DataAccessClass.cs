@@ -10,9 +10,9 @@ namespace BackEnd.DataAccess
 
         public IMongoCollection<T> collection { get; private set; }
 
-        public DataAccessClass(string table,string database)
+        public DataAccessClass(string conString,string table,string database)
         {
-            var client = new MongoClient(SettingsHolder.ConnectionString);
+            var client = new MongoClient(conString);
             var db = client.GetDatabase(database);
             var col = db.GetCollection<T>(table);
             collection = col;
