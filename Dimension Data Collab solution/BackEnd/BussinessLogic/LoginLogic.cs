@@ -32,7 +32,7 @@ namespace BackEnd.BussinessLogic
             ));
             var result = data.First();
 
-
+      
             try
             {
                 if (result != null)
@@ -78,6 +78,20 @@ namespace BackEnd.BussinessLogic
             var result = data.First();
 
             return result;
+        }
+
+        public void UpdatePersonEmailName(ObjectId id,string name,string email)
+        {
+            var filter = new BsonDocument("_id", id);
+            var update = Builders<PersonModel>.Update.Set("Name", name).Set("Email",email);
+            collection.UpdateOne(filter, update);
+        }
+
+        public void UpdatePersonEmailNameRole(ObjectId id, string name, string email,string role)
+        {
+            var filter = new BsonDocument("_id", id);
+            var update = Builders<PersonModel>.Update.Set("Name", name).Set("Email", email).Set("Role", role);
+            collection.UpdateOne(filter, update);
         }
     }
 }

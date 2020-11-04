@@ -1,11 +1,12 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BackEnd.DataAccess
 {
-    public class  DataAccessClass<T>
+    public abstract class DataAccessClass<T>
     {
 
         public IMongoCollection<T> collection { get; private set; }
