@@ -5,7 +5,7 @@
 
 <h3>Various stats by age in the company</h3>
 
-<div>
+<div class="complexGraph">
     <canvas id="StatsChart"></canvas>
 </div>
 
@@ -73,6 +73,7 @@
             ]
         },
         options: {
+            maintainAspectRatio: false,
             title: {
                 display: true,
                 text: 'Various stats by age'

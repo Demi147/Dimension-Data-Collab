@@ -61,7 +61,7 @@ namespace BackEnd.BussinessLogic
             {
                 try
                 {
-                    jobinvolement[i] = rawData.Where(x => x.Age < bins[i + 1] && x.Age >= bins[i]).Select(x => x.JobInvolvement).Average();
+                    jobinvolement[i] = rawData.Where(x => x.Age < bins[i]+2.5 && x.Age >= bins[i]-2.5).Select(x => x.JobInvolvement).Average();
                 }
                 catch (Exception)
                 {
@@ -76,7 +76,7 @@ namespace BackEnd.BussinessLogic
             {
                 try
                 {
-                    JobSatisfaction[i] = rawData.Where(x => x.Age < bins[i + 1] && x.Age >= bins[i]).Select(x => x.JobSatisfaction).Average();
+                    JobSatisfaction[i] = rawData.Where(x => x.Age < bins[i]+2.5 && x.Age >= bins[i]-2.5).Select(x => x.JobSatisfaction).Average();
                 }
                 catch (Exception)
                 {
@@ -91,7 +91,7 @@ namespace BackEnd.BussinessLogic
             {
                 try
                 {
-                    education[i] = rawData.Where(x => x.Age < bins[i + 1] && x.Age >= bins[i]).Select(x => x.Education).Average();
+                    education[i] = rawData.Where(x => x.Age < bins[i]+2.5 && x.Age >= bins[i]-2.5).Select(x => x.Education).Average();
                 }
                 catch (Exception)
                 {
@@ -106,7 +106,7 @@ namespace BackEnd.BussinessLogic
             {
                 try
                 {
-                    EnvironmentSatisfaction[i] = rawData.Where(x => x.Age < bins[i + 1] && x.Age >= bins[i]).Select(x => x.EnvironmentSatisfaction).Average();
+                    EnvironmentSatisfaction[i] = rawData.Where(x => x.Age < bins[i]+2.5 && x.Age >= bins[i]-2.5).Select(x => x.EnvironmentSatisfaction).Average();
                 }
                 catch (Exception)
                 {
@@ -121,7 +121,7 @@ namespace BackEnd.BussinessLogic
             {
                 try
                 {
-                    JobLevel[i] = rawData.Where(x => x.Age < bins[i + 1] && x.Age >= bins[i]).Select(x => x.JobLevel).Average();
+                    JobLevel[i] = rawData.Where(x => x.Age < bins[i]+2.5 && x.Age >= bins[i]-2.5).Select(x => x.JobLevel).Average();
                 }
                 catch (Exception)
                 {

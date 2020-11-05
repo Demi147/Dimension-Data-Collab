@@ -39,9 +39,10 @@ namespace BackEnd.DataAccess
             return res.First();
         }
 
-        public void InsertRecord(T record)
+        public virtual async Task<bool> InsertRecord(T record)
         {
             collection.InsertOne(record);
+            return true;
         }
 
         //public void UpdateRecord(ObjectId _id, T record)

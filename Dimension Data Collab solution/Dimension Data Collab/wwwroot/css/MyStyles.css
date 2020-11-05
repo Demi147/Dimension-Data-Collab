@@ -1,0 +1,45 @@
+﻿body {
+}
+
+*{
+
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashBoard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "Left Right";
+}
+
+.left-bar {
+    grid-area: Left;
+}
+
+.right-bar {
+    grid-area: Right;
+}
+
+.complexGraph {
+    height: 60vh;
+    width: 100%;
+}
+/* For mobile phones: */
+@media only screen and (max-width: 768px) {
+    * {
+        margin: 0;
+    }
+    .dashBoard {
+        display: inline;
+    }
+    .complexGraph {
+        height: 80vh;
+        width: 80vw;
+    }
+}

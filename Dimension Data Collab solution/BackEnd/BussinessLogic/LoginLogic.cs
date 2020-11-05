@@ -30,18 +30,19 @@ namespace BackEnd.BussinessLogic
                 new BsonElement("PasswordHash",pass),
             }
             ));
+            if (data==null)
+            {
+                temp.Item3 = "Could not find your account, Please make sure you entered the right details.";
+                return temp;
+            }
             var result = data.First();
 
       
             try
             {
-                if (result != null)
-                {
-                    //generate principal here?
-                    var princ = GetPrinciple(result);
-                    temp.Item1 = true;
-                    temp.Item2 = princ;
-                }
+                var princ = GetPrinciple(result);
+                temp.Item1 = true;
+                temp.Item2 = princ;
             }
             catch
             {
@@ -92,6 +93,28 @@ namespace BackEnd.BussinessLogic
             var filter = new BsonDocument("_id", id);
             var update = Builders<PersonModel>.Update.Set("Name", name).Set("Email", email).Set("Role", role);
             collection.UpdateOne(filter, update);
+        }
+
+        private async Task<bool> CheckIfEmailExists(string email)
+        {
+            var data = await collection.FindAsync(new BsonDocument(new List<BsonElement>()
+            {
+                new BsonElement("Email",email),
+            }
+            ));
+
+            if (data !=null) return true; else return false; // PS . i hate doing if statements like this, but im getting lazy
+        }
+
+        public override async Task<bool> InsertRecord(PersonModel record)
+        {
+            //check if email exists.....
+            bool emailExist = await CheckIfEmailExists(record.Email);
+            if (!emailExist)
+            {
+                return await base.InsertRecord(record);
+            }
+            return false;
         }
     }
 }

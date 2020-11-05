@@ -7,15 +7,20 @@
 </head>
 <h1>Dashboard</h1>
 
-<div class="container-fluid">
-    <span>These were done with charts.Js , just to show that i can</span>
-    <div class="row">
-
-        <div class="col-6">@await Html.PartialAsync("DemoChart1")</div>
-        <div class="col-6">@await Html.PartialAsync("DemoChart2")</div>
+<span>These were done with charts.Js , just to show that i can</span>
+<div class="dashBoard">
+    <div class="left-bar">
+        @await Html.PartialAsync("DemoChart1")
     </div>
+    <div class="right-bar">
+        @await Html.PartialAsync("DemoChart2")
+    </div>
+</div>
 
-    <span>Done with the mongodb embeded charts, because why code something that i can allready use</span>
+<div class="container-fluid">
+    
+
+    <span>Done with the mongodb embeded charts, because why code a tool while i have access to mongodb charts?</span>
     <div class="row">
 
         <div class="col"><iframe style="background: #21313C;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);" width="500" height="380" src="https://charts.mongodb.com/charts-323-project-2-bpuna/embed/charts?id=2a2e3fae-1872-4442-adf9-970773cb6a70&theme=dark"></iframe></div>

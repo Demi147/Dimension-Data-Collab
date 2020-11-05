@@ -61,21 +61,25 @@ namespace Dimension_Data_Collab.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public IActionResult Register(PersonModel model)
+        public async Task<IActionResult> Register(PersonModel model)
         {
-            //TODO: CHECK IF EMAIL UNIQUE
+            //TODO: CHECK IF EMAIL UNIQUE >> DONE >> in backend > login logic
             if (ModelState.IsValid)
             {
-                //TODO: Encrypt password here
-                loginLogic.InsertRecord(model);
-                return RedirectToAction("Login");
+                //TODO: Encrypt password here >>> Not here >> in Backend
+                var result = await loginLogic.InsertRecord(model);
+                if (result)
+                {
+                    return RedirectToAction("Login");
+                }
+                ViewData["Error"] = "This email adress allready exists..";
+                return View();
             }
             else
             {
                 ViewData["Error"] = "You added null values. Please make sure you add valid values.";
-                return RedirectToAction("Register");
+                return View();
             }
-            //give the data to the register user backend
             
         }
 
