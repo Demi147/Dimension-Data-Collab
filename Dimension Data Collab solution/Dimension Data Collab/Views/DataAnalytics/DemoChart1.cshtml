@@ -2,25 +2,36 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 <h3>Demo Chart 1</h3>
-<div style="height:400px; width:400px">
+<div>
     <canvas id="TestChart"></canvas>
 </div>
 
 
 <script>
+    var x = @Html.Raw(ViewBag.MaleData);
+    var y = @Html.Raw(ViewBag.FemaleData);
 
-    var x = @Html.Raw(Json.Serialize(ViewBag.Data.Item1));
-    var y = @Html.Raw(Json.Serialize(ViewBag.Data.Item2));
     var can = document.getElementById("TestChart");
-    var chart = new Chart(can, {
+
+    var q = new Chart(can, {
         type: 'doughnut',
 
         data: {
             labels: ["Male", "Female"],
+
             datasets: [
                 {
-                    label: "Label i think",
-                    data:[x,y]
+                    label: "Gender count",
+                    data: [x, y],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    borderWidth: 1
                 }
             ]
         },

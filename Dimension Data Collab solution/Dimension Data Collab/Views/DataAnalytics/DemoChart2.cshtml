@@ -3,11 +3,87 @@
 *@
 
 
-<h3>Demo Chart 2</h3>
+<h3>Various stats by age in the company</h3>
 
-
-<canvas></canvas>
+<div>
+    <canvas id="StatsChart"></canvas>
+</div>
 
 <script>
+    //xvalues,jobinvolement,JobSatisfaction,education,EnvironmentSatisfaction,JobLevel
+    var x = @Html.Raw(ViewBag.ComplexLabels);
+    var jobinvolement = @Html.Raw(ViewBag.jobinvolement);
+    var JobSatisfaction = @Html.Raw(ViewBag.JobSatisfaction);
+    var education = @Html.Raw(ViewBag.education);
+    var EnvironmentSatisfaction = @Html.Raw(ViewBag.EnvironmentSatisfaction);
+    var JobLevel = @Html.Raw(ViewBag.JobLevel);
 
+    var can = document.getElementById("StatsChart");
+
+    var q = new Chart(can, {
+        type: 'line',
+        data: {
+            labels: x,
+
+            datasets: [
+                {
+                    label: "Job Involvement",
+                    data: jobinvolement,
+                    backgroundColor:'rgba(255, 99, 132, 0.2)',
+                    pointBackgroundColor: 'rgba(255, 99, 132, 0.7)',
+                    borderColor: 'rgba(255, 99, 132, 0.7)',
+                    borderWidth: 1
+                },
+                {
+                    label: "JobSatisfaction",
+                    data: JobSatisfaction,
+
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    pointBackgroundColor: 'rgba(54, 162, 235, 0.7)',
+                    borderColor: 'rgba(54, 162, 235, 0.7)',
+                    borderWidth: 1
+                },
+                {
+                    label: "education",
+                    data: education,
+
+                    backgroundColor: 'rgba(40, 128, 83, 0.2)',
+                    pointBackgroundColor: 'rgba(40, 128, 83, 0.7)',
+                    borderColor: 'rgba(40, 128, 83, 0.7)',
+                    borderWidth: 1
+                },
+                {
+                    label: "EnvironmentSatisfaction",
+                    data: EnvironmentSatisfaction,
+
+                    backgroundColor: 'rgba(131, 67, 203, 0.2)',
+                    pointBackgroundColor: 'rgba(131, 67, 203, 0.7)',
+                    borderColor: 'rgba(131, 67, 203, 0.7)',
+                    borderWidth: 1
+                },
+                {
+                    label: "JobLevel",
+                    data: JobLevel,
+
+                    backgroundColor: 'rgba(203, 67, 67, 0.2)',
+                    pointBackgroundColor: 'rgba(203, 67, 67, 0.7)',
+                    borderColor: 'rgba(203, 67, 67, 0.7)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Various stats by age'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
 </script>
