@@ -37,6 +37,12 @@ namespace BackEnd.BussinessLogic
             }
             var result = data.First();
 
+            if (!result.Validated)
+            {
+                //account not validated
+                temp.Item3 = "Account not validated, please validate your account via the email sent.";
+                return temp;
+            }
       
             try
             {
@@ -97,13 +103,13 @@ namespace BackEnd.BussinessLogic
 
         private async Task<bool> CheckIfEmailExists(string email)
         {
-            var data = await collection.FindAsync(new BsonDocument(new List<BsonElement>()
+            var data = await collection.Find(new BsonDocument(new List<BsonElement>()
             {
                 new BsonElement("Email",email),
             }
-            ));
+            )).CountDocumentsAsync();
 
-            if (data !=null) return true; else return false; // PS . i hate doing if statements like this, but im getting lazy
+            if (data >0) return true; else return false; // PS . i hate doing if statements like this, but im getting lazy
         }
 
         public override async Task<bool> InsertRecord(PersonModel record)
@@ -112,9 +118,49 @@ namespace BackEnd.BussinessLogic
             bool emailExist = await CheckIfEmailExists(record.Email);
             if (!emailExist)
             {
-                return await base.InsertRecord(record);
+                //send email here
+                
+                
+
+                //steps
+                //create user
+                await base.InsertRecord(record);
+                //get user id
+                var data = await GetUserByEmail(record.Email);
+                //send email
+                EmailSystem.SendEmail(GenerateMassage(record.Name, data._id.ToString()), record.Email);
+
+                return true;
             }
             return false;
+        }
+
+        public void ValidateEmail(ObjectId id)
+        {
+            var filter = new BsonDocument("_id", id);
+            var update = Builders<PersonModel>.Update.Set("Validated", true);
+            collection.UpdateOne(filter, update);
+        }
+
+        private string GenerateMassage(string name,string id)
+        {
+            string temp = "";
+
+            temp += "<h2> Hi "+name+"</h2>";
+            temp += "<p>Please click the following link to validate your email</p>";
+            temp += "https://dimensiondatacollab.azurewebsites.net/Login/Validate/" + id;
+
+            return temp;
+        }
+
+        public override async Task<PersonModel> GetRecordById(ObjectId _id)
+        {
+            var filter = Builders<PersonModel>.Filter.Eq("_id", _id);
+
+            var res = await collection.FindAsync(filter);
+            var data = res.First();
+            data.PasswordHash = "";
+            return data;
         }
     }
 }

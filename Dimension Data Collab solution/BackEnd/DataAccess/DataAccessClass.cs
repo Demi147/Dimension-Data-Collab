@@ -30,7 +30,7 @@ namespace BackEnd.DataAccess
         //    return await collection.Find(new BsonDocument()).Skip((page - 1) * pageSize).Limit(pageSize).ToListAsync();
         //}
 
-        public async Task<T> GetRecordById(ObjectId _id)
+        public virtual async Task<T> GetRecordById(ObjectId _id)
         {
             var filter = Builders<T>.Filter.Eq("_id", _id);
 

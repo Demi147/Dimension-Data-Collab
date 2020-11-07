@@ -53,6 +53,11 @@ namespace Dimension_Data_Collab.Controllers
             return View(items);
         }
 
+        public IActionResult Create()
+        {
+            return View();
+        }
+
         [Route("data/details/{id}")]
         public async Task<IActionResult> Details(string id)
         {

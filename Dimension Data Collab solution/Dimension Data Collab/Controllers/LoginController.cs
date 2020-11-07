@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Core.Infrastructure;
+using MongoDB.Bson;
 
 namespace Dimension_Data_Collab.Controllers
 {
@@ -122,22 +123,23 @@ namespace Dimension_Data_Collab.Controllers
 
         [Authorize(Roles = "admin,manager")]
         [HttpPost]
-        public IActionResult EditAccount(string id,PersonModel model)
+        public IActionResult EditAccount(string id,string Role,PersonModel model)
         {
             //check a few things
             //edit own account??
             //is manager
             //is admin?
             //var data = await loginLogic.GetRecordById(new MongoDB.Bson.ObjectId(id));
-            if (model.Role!=null)
+            if (User.IsInRole("admin"))
             {
                 loginLogic.UpdatePersonEmailNameRole(new MongoDB.Bson.ObjectId(id), model.Name, model.Email,model.Role);
                 //IF CURRENT USER : LOGOUT
                 //TODO
             }
-            else
+            else if (User.IsInRole("manager"))
             {
                 loginLogic.UpdatePersonEmailName(new MongoDB.Bson.ObjectId(id), model.Name, model.Email);
+                return RedirectToAction("index","Home");
             }
             return RedirectToAction("ListAccounts");
         }
@@ -165,6 +167,13 @@ namespace Dimension_Data_Collab.Controllers
             //DELETE RECORD HERE
             loginLogic.DeleteRecord(new MongoDB.Bson.ObjectId(id));
             return RedirectToAction("ListAccounts");
+        }
+
+        public IActionResult Validate(string id)
+        {
+            //validate email here
+            loginLogic.ValidateEmail(new ObjectId(id));
+            return View();
         }
     }
 }
