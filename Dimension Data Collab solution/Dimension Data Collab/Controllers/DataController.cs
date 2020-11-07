@@ -53,8 +53,21 @@ namespace Dimension_Data_Collab.Controllers
             return View(items);
         }
 
+        [Authorize(Roles = "manager,admin")]
         public IActionResult Create()
         {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "manager,admin")]
+        public async Task<IActionResult> Create(DataItem model)
+        {
+            if (ModelState.IsValid)
+            {
+                //add here
+                await dataLogic.InsertRecord(model);
+            }
             return View();
         }
 
@@ -96,6 +109,7 @@ namespace Dimension_Data_Collab.Controllers
 
         [Route("data/Update/{id}")]
         [HttpPost]
+        [Authorize(Roles = "manager,admin")]
         public IActionResult Update(string id,DataItem model)
         {
             if (ModelState.IsValid)
