@@ -52,7 +52,10 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    @if (User.IsInRole("admin") || User.IsInRole("manager"))
+    {
+        <a asp-action="ListAccounts">Back to List</a>
+    }
 </div>
 
 @section Scripts {

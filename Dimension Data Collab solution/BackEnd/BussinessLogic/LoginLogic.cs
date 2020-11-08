@@ -27,7 +27,7 @@ namespace BackEnd.BussinessLogic
             var data = await collection.FindAsync(new BsonDocument(new List<BsonElement>()
             {
                 new BsonElement("Email",email),
-                new BsonElement("PasswordHash",pass),
+                new BsonElement("PasswordHash",PasswordHandeler.EncryptPassword(pass)),
             }
             ));
             if (data==null)
@@ -118,10 +118,7 @@ namespace BackEnd.BussinessLogic
             bool emailExist = await CheckIfEmailExists(record.Email);
             if (!emailExist)
             {
-                //send email here
-                
-                
-
+                record.PasswordHash = PasswordHandeler.EncryptPassword(record.PasswordHash);
                 //steps
                 //create user
                 await base.InsertRecord(record);

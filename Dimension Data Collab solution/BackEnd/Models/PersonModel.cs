@@ -8,6 +8,7 @@ namespace BackEnd.Models
     public class PersonModel
     {
         [BsonId]
+        [BsonIgnoreIfDefault]
         public ObjectId _id;
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Name is required")]

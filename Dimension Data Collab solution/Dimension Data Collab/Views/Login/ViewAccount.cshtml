@@ -31,6 +31,11 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "EditAccount", new { id = Model._id.ToString() }) |
-    <a asp-action="Index">Back to List</a>
+    @if (User.IsInRole("admin"))
+    {
+        @Html.ActionLink("Edit", "EditAccount", new { id = Model._id.ToString() }) @:|
+        <a asp-action="ListAccounts">Back to List</a>
+    }
+
+    <a asp-controller="Home" asp-action="Index">Home</a>
 </div>

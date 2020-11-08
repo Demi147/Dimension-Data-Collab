@@ -23,6 +23,11 @@ namespace BackEnd.DataAccess
         {
             return await collection.Find(new BsonDocument()).Skip((page-1) * pageSize).Limit(pageSize).ToListAsync();
         }
+        public virtual async Task<List<T>> GetAllRecords(int page, int pageSize,string filterBy,string Cat)//NOTE: start counting at 1
+        {
+            var filter = Builders<T>.Filter.Regex(Cat, new BsonRegularExpression(filterBy));
+            return await collection.Find(filter).Skip((page - 1) * pageSize).Limit(pageSize).ToListAsync();
+        }
 
         //public async Task<List<T>> GetAllRecordsAndFilter(int page, int pageSize , string query)//NOTE: start counting at 1
         //{

@@ -43,11 +43,25 @@ namespace Dimension_Data_Collab.Controllers
         [Route("data/index")]
         [Route("data/{page}")]
         [Route("data/index/{page}")]
-        public async Task<IActionResult> Index(int page)
+        public async Task<IActionResult> Index(int page,string searchString, string cat)
         {
+
             int pageTemp = (page > 0 ? page : 1);
-            var items = await dataLogic.GetAllRecords(pageTemp,15);
+            var items = new List<DataItem>();
+            if (string.IsNullOrEmpty(searchString))
+            {
+                //searchString = ViewData["query"].ToString();
+            }
+            if (string.IsNullOrEmpty(searchString))
+            {
+                items = await dataLogic.GetAllRecords(pageTemp, 15);
+            }
+            else
+            {
+                items = await dataLogic.GetAllRecords(pageTemp, 15,searchString,cat);
+            }
             var pages = await dataLogic.GetCount();
+            ViewData["query"] = searchString;
             ViewData["pages"] = (int)(pages / 15);
             ViewData["page"] = pageTemp;
             return View(items);

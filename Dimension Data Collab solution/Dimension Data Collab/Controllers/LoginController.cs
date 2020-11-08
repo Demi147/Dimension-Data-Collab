@@ -27,7 +27,7 @@ namespace Dimension_Data_Collab.Controllers
         {
             return View();
         }
-         
+        
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> Login(string returnUrl,string email,string PasswordHash )
@@ -110,7 +110,7 @@ namespace Dimension_Data_Collab.Controllers
             return View(data);
         }
 
-        [Authorize(Roles = "admin,manager")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> EditAccount(string id)
         {
             //check a few things
@@ -121,7 +121,7 @@ namespace Dimension_Data_Collab.Controllers
             return View(data);
         }
 
-        [Authorize(Roles = "admin,manager")]
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult EditAccount(string id,string Role,PersonModel model)
         {
@@ -151,7 +151,7 @@ namespace Dimension_Data_Collab.Controllers
             return View(data);
         }
 
-        [Authorize(Roles = "admin,manager")]
+        [Authorize(Roles = "admin")]
         [Route("Login/Delete/{id}")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -159,7 +159,7 @@ namespace Dimension_Data_Collab.Controllers
             return View(data);
         }
 
-        [Authorize(Roles = "admin,manager")]
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [Route("Login/Delete/{id}")]
         public IActionResult DeletePost(string id)

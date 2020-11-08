@@ -26,31 +26,33 @@
                         //when loggged in
                         if (User.Identity.IsAuthenticated)
                         {
-                            <ul class="navbar-nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Data" asp-action="Index">Main Data</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="DataAnalytics" asp-action="Index">Main Data</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="DataAnalytics" asp-action="Dashboard">Dashboard</a>
-                                </li>
-
-                                <!-- Dropdown -->
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                                        Account
-                                    </a>
-                                    <div class="dropdown-menu">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="ViewAccount">View Account</a>
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
-                                    </div>
-                                </li>
-                            </ul>
+                                <ul class="navbar-nav">
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Data" asp-action="Index">Main Data</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="DataAnalytics" asp-action="Dashboard">Dashboard</a>
+                                    </li>
+                                    @if (User.IsInRole("admin"))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-area="" asp-controller="Login" asp-action="ListAccounts">List Accounts</a>
+                                        </li>
+                                    }
+                                    <!-- Dropdown -->
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                            Account
+                                        </a>
+                                        <div class="dropdown-menu">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="ViewAccount">View Account</a>
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
+                                        </div>
+                                    </li>
+                                </ul>
                         }
                         else
                         {

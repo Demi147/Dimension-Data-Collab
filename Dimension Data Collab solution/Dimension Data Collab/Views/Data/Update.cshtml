@@ -1,5 +1,5 @@
 ﻿@model BackEnd.Models.DataItem
-
+@using Dimension_Data_Collab.MiddleWare
 @{
     ViewData["Title"] = "Update";
 }
@@ -24,7 +24,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="BusinessTravel" class="control-label"></label>
-                <input asp-for="BusinessTravel" class="form-control" />
+                @*<input asp-for="BusinessTravel" class="form-control" />*@
+                <select asp-for="BusinessTravel" asp-items="@new SelectList(DropdownValues.BusinessTravel)"></select>
                 <span asp-validation-for="BusinessTravel" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -34,7 +35,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="Department" class="control-label"></label>
-                <input asp-for="Department" class="form-control" />
+                @*<input asp-for="Department" class="form-control" />*@
+                <select asp-for="Department" asp-items="@new SelectList(DropdownValues.Department)"></select>
                 <span asp-validation-for="Department" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -49,7 +51,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="EducationField" class="control-label"></label>
-                <input asp-for="EducationField" class="form-control" />
+                @*<input asp-for="EducationField" class="form-control" />*@
+                <select asp-for="EducationField" asp-items="@new SelectList(DropdownValues.EducationField)"></select>
                 <span asp-validation-for="EducationField" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -69,7 +72,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="Gender" class="control-label"></label>
-                <input asp-for="Gender" class="form-control" />
+                @*<input asp-for="Gender" class="form-control" />*@
+                <select asp-for="Gender" asp-items="@new SelectList(DropdownValues.Genders)"></select>
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -99,7 +103,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="MaritalStatus" class="control-label"></label>
-                <input asp-for="MaritalStatus" class="form-control" />
+                @*<input asp-for="MaritalStatus" class="form-control" />*@
+                <select asp-for="MaritalStatus" asp-items="@new SelectList(DropdownValues.MaritalStatus)"></select>
                 <span asp-validation-for="MaritalStatus" class="text-danger"></span>
             </div>
             <div class="form-group">

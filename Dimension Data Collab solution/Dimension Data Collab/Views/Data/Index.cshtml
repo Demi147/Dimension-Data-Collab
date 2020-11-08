@@ -1,17 +1,33 @@
-﻿@model IEnumerable<BackEnd.Models.DataItem>
+﻿
+@model IEnumerable<BackEnd.Models.DataItem>
 
 @{
     ViewData["Title"] = "Index";
+
+    List<string> cats = new List<string>()
+    {
+        "Department",
+        "JobRole"
+    };
 }
 
 <h1>Index</h1>
 
 <p>
-    @if (User.IsInRole("admin,manager"))
+    @if (User.IsInRole("admin")|| User.IsInRole("manager"))
     {
         <a asp-action="Create">Create New</a>
     }
 </p>
+
+<form asp-controller="Data" asp-action="Index">
+    <p>
+        Query: <input type="text" name="SearchString" value=@ViewData["query"]>
+        <select name="cat" class="form-control" asp-items="@new SelectList(cats)"></select>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -56,13 +72,15 @@
                     @if (Context.User.IsInRole("manager"))
                     {
                         @Html.ActionLink("Details", "Details", new { id = item._id.ToString() })
+                        @: |
+                        @Html.ActionLink("Edit", "Update", new { id = item._id.ToString() })
                     }
                     @if (Context.User.IsInRole("admin"))
                     {
                         @Html.ActionLink("Details", "Details", new { id = item._id.ToString() })
-                        @: | 
+                        @: |
                         @Html.ActionLink("Edit", "Update", new { id = item._id.ToString() })
-                        @: | 
+                        @: |
                         @Html.ActionLink("Delete", "Delete", new { id = item._id.ToString() })
                     }
 
@@ -77,50 +95,50 @@
     var pages = (int)ViewData["pages"];
     var currentPage = (int)ViewData["page"];
 
-    <div>
-        <ul class="pagination">
-            @if (currentPage > 1)
-            {
-                <li class="page-item"><a class="page-link" href="@(currentPage-1) ">&laquo;</a></li>
+<div>
+    
+    <ul class="pagination">
+        @if (currentPage > 1)
+        {
+            <li class="page-item"><a class="page-link" href="@(currentPage-1) ">&laquo;</a></li>
+        }
+        @if (currentPage > 4)
+        {
+            <li class="page-item"><a class="page-link" href="1">1</a></li>
+        }
 
-            }
-            @if (currentPage > 4)
+        <!--To left-->
+        @for (int i = currentPage - 4, k = 1; i < currentPage; i++, k++)
+        {
+            if (i > 0)
             {
-                <li class="page-item"><a class="page-link" href="1">1</a></li>
-            }
-
-            <!--To left-->
-            @for (int i = currentPage - 4, k = 1; i < currentPage; i++, k++)
-            {
-                if (i > 0)
-                {
-                    <li class="page-item"><a class="page-link" href="@i">@i</a></li>
-                }
-
+                <li class="page-item"><a class="page-link" href="@i">@i</a></li>
             }
 
-            <li class="btn page-item page-link disabled">@currentPage</li>
+        }
 
-            <!--To right-->
-            @for (int i = currentPage + 1, k = 1; i < currentPage + 4; i++, k++)
+        <li class="btn page-item page-link disabled">@currentPage</li>
+
+        <!--To right-->
+        @for (int i = currentPage + 1, k = 1; i < currentPage + 4; i++, k++)
+        {
+            if (i <= pages)
             {
-                if (i <= pages)
-                {
-                    <li class="page-item"><a class="page-link" href="@i">@i</a></li>
-                }
+                <li class="page-item"><a class="page-link" href="@i">@i</a></li>
             }
+        }
 
-            @if (currentPage < pages)
-            {
-                <li class="page-item"><a class="page-link" href="@(currentPage+1)">&raquo;</a></li>
-            }
-            @if (currentPage < pages)
-            {
-                <li class="page-item"><a class="page-link" href="@pages">@pages</a></li>
-            }
+        @if (currentPage < pages)
+        {
+            <li class="page-item"><a class="page-link" href="@(currentPage+1)">&raquo;</a></li>
+        }
+        @if (currentPage < pages)
+        {
+            <li class="page-item"><a class="page-link" href="@pages">@pages</a></li>
+        }
 
-        </ul>
+    </ul>
 
-    </div>
+</div>
 
 }
