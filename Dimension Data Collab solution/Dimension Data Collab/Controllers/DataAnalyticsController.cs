@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BackEnd.BussinessLogic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver.Core.Operations;
 using Newtonsoft.Json;
 
 namespace Dimension_Data_Collab.Controllers
 {
+    [Authorize]
     public class DataAnalyticsController : Controller
     {
         private DataLogic dataLogic;
