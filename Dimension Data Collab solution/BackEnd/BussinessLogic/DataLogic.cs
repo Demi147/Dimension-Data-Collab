@@ -2,9 +2,6 @@
 using BackEnd.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver.Linq;
 using System.Linq;
@@ -19,22 +16,6 @@ namespace BackEnd.BussinessLogic
         }
 
         //Custom data logic
-
-        public async Task<(List<int>, List<int>)> GetAgeCount()
-        {
-            var x = new List<int>();
-            var y = new List<int>();
-            var temp = (x,y);
-            //get distinct ages
-            var xdata = await collection.DistinctAsync(Q=>Q.Age, new BsonDocument());
-            x = xdata.ToList();
-            foreach (var item in x)
-            {
-
-            }
-            return temp;
-        }
-
         public async Task<(long, long)> GetGenderCount()
         {
             var x = await collection.CountDocumentsAsync(new BsonDocument("Gender","Male"));
@@ -63,9 +44,9 @@ namespace BackEnd.BussinessLogic
                 {
                     jobinvolement[i] = rawData.Where(x => x.Age < bins[i]+2.5 && x.Age >= bins[i]-2.5).Select(x => x.JobInvolvement).Average();
                 }
-                catch (Exception)
+                catch
                 {
-
+                    break;
                 }
                 
             }
@@ -78,9 +59,9 @@ namespace BackEnd.BussinessLogic
                 {
                     JobSatisfaction[i] = rawData.Where(x => x.Age < bins[i]+2.5 && x.Age >= bins[i]-2.5).Select(x => x.JobSatisfaction).Average();
                 }
-                catch (Exception)
+                catch
                 {
-
+                    break;
                 }
 
             }
@@ -93,9 +74,9 @@ namespace BackEnd.BussinessLogic
                 {
                     education[i] = rawData.Where(x => x.Age < bins[i]+2.5 && x.Age >= bins[i]-2.5).Select(x => x.Education).Average();
                 }
-                catch (Exception)
+                catch
                 {
-
+                    break;
                 }
 
             }
@@ -108,9 +89,9 @@ namespace BackEnd.BussinessLogic
                 {
                     EnvironmentSatisfaction[i] = rawData.Where(x => x.Age < bins[i]+2.5 && x.Age >= bins[i]-2.5).Select(x => x.EnvironmentSatisfaction).Average();
                 }
-                catch (Exception)
+                catch
                 {
-
+                    break;
                 }
 
             }
@@ -123,9 +104,9 @@ namespace BackEnd.BussinessLogic
                 {
                     JobLevel[i] = rawData.Where(x => x.Age < bins[i]+2.5 && x.Age >= bins[i]-2.5).Select(x => x.JobLevel).Average();
                 }
-                catch (Exception)
+                catch
                 {
-
+                    break;
                 }
 
             }
