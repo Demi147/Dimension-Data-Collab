@@ -3,6 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+
+
 # User-specific files
 *.rsuser
 *.suo
@@ -351,3 +353,4 @@ MigrationBackup/
 Dimension Data Collab solution/BackEnd/BussinessLogic/EmailSystem.cs
 BFG.jar
 Dimension Data Collab solution/Dimension Data Collab/appsettings.json
+.git.bfg-report
